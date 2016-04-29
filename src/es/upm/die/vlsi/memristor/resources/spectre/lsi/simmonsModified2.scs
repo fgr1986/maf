@@ -1,0 +1,24 @@
+
+/////////////////////////////////////////////
+// State equation modeling
+/////////////////////////////////////////////
+
+// Constants
++ lambda=log(Roff/Ron)
+
+//State variable
+Ew (w 0) bsource v=idt(f_off*sinh(stp(v(Plus, Minus))*i(G1)/i_off)* exp(-exp(((v(w)-a_off)/w_c)-(i(G1)/b))-v(w)/w_c) - f_on*sinh(stp(-v(Plus, Minus))*i(G1)/i_on)* exp(-exp((a_on-v(w))/w_c-(i(G1)/b))-v(w)/w_c), w_init)
+
+EMemristance (memristance 0) bsource v=Ron*exp(lambda*(v(w)-x_on)/(x_off-x_on))
+
+G1 (Plus Minus) bsource i=v(Plus, Minus)/v(memristance)
+
+
+//step function
+real stp(real a) {
+	return max(0,sgn(a));
+}
+
+ends memristor
+
+

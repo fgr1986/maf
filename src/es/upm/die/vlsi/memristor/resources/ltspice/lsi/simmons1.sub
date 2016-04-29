@@ -1,0 +1,15 @@
+*******************************************************************************************************
+** SPICE Simmons' tunneling barrier HP's TiO2 memristor circuit                                      **
+** Port from the SPICE model of Hisham Abdalla and Matthew D. Pickett paper:                         **
+** SPICE Modeling of Memristors (IEEE International Symposium on Circuits and Systems (ISCAS), 2011) **
+** Modeled as a series resistance Rs and a current source                                            **
+** Ports: Plus, Minus                                                                                **
+*******************************************************************************************************
+** Improved LSI Scheme                                                                               **
+*******************************************************************************************************
+
+
+*********************************************
+** Subcircuit and Parameters
+*********************************************
+.SUBCKT memristor Plus Minus PARAMS:

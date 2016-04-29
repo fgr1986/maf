@@ -1,0 +1,11 @@
+*********************************************
+**State equations modeling
+*********************************************
+EG dx 0 value={k_off*((i(Rm)/i_off-1)**alpha_off) * exp(-exp( (V(x)-a_off)/w_c ))*stp(I(Rm)-i_off) + k_on*((i(Rm)/i_on-1)**alpha_off) * exp(-exp( (a_on - V(x))/w_c ))*stp(i_on-I(Rm))}
+
+EX x 0 value={limit(x_on, x_off, idt(V(dx), x_init))}
+
+Rm Plus Minus R=Ron*exp(lambda*(V(x)-x_on)/(x_off-x_on))
+
+.ENDS memristor
+

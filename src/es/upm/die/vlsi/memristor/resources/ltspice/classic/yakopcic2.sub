@@ -1,0 +1,17 @@
+*********************************************
+**STATE EQUATION MODELING
+*********************************************
+GFxON 0 x value={stp(V(Plus, Minus) - Vp)*Ap*(exp(V(Plus, Minus))-exp(Vp))*winYakopcicON(V(x), Xp, Xn)}
+GFxOFF 0 x value={-stp(-V(Plus, Minus)-Vn)*An*(exp(-V(Plus, Minus))-exp(Vn))*winYakopcicOFF(V(x),Xp, Xn)}
+Cx x 0 1 IC={x_init}
+Raux x 0 1T
+GI Plus Minus value={a1*V(x)*sinh(b*(V(Plus, Minus)))*stp(V(Plus, Minus)) + a2*V(x)*sinh(b*(V(Plus, Minus)))*stp(-V(Plus, Minus))}
+
+*.func winYakopcic(x, Xp, Xn) = {( exp(-alphaP*(x - Xp))* ((Xp-x)/(1-Xp) +1) *stp(x-Xp)+ exp(alphaN*(x + Xn + 1))* (x/(1-Xn)) *stp(1-x-Xn)  )}
+
+.func winYakopcicON(x, Xp, Xn) = { exp(-alphaP*(x - Xp))* ((Xp-x)/(1-Xp) +1) *stp(x-Xp) + stp(Xp-x)}
+.func winYakopcicOFF(x, Xp, Xn) = {exp(alphaN*(x + Xn + 1))* (x/(1-Xn)) *stp(1-x-Xn) + stp(x-1+Xn) }
+
+.ENDS memristor
+
+

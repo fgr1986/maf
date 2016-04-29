@@ -1,0 +1,29 @@
+** Constants
++ p2=2*p p02=2*p0 c_1=(1/c)
+**State variable
+EG dw 0 value={stp(w_max-V(w))*stp(V(Plus, Minus))*gon(V(Plus, Minus), sf(V(w))) + stp(V(w)-w_min)*stp(V(Minus, Plus))*goff(V(Plus, Minus), sf(V(w)))}
+
+**Integration
+*EX w 0 value={limit(0, idt(V(dw), w_init), 1)}
+EX w 0 value={min(max(0, idt(V(dw), w_init)), 1)}
+
+**Current
+G1 Plus Minus  value={(V(w)**n)*a1*sinh(b1*V(Plus, Minus)) + a2*(exp(b2*V(Plus, Minus))-1)}
+
+*****************************
+** MIM Threshold Functions **
+*****************************
+**shape function
+*.func sf(w, sfo, sfm, p2) =sfo + sfm*(1-(2*w-1)**p2);
+.func sf(w) =sfo + sfm*(1-(2*w-1)**p2);
+**dw/dt positive contribution
+*.func gon(v1, v2, v3, f_on) = f_on*(1-v1/(2*v3))*exp(v2*v3*(1-sqrt(1-v1/(2*v3))));
+**dw/dt negative contribution
+*.func goff(v1, v2, v3, f_off) =-f_off*(1+v1/(2*v3))*exp(v2*v3*(1-sqrt(1+v1/(2*v3))));
+
+**dw/dt positive and negative contributions
+.func gon(v1, sfw) = c_1*f_on*(1-v1/(p02))*exp(sfw*p0*(1-sqrt(1-v1/(p02))));
+.func goff(v1, sfw) =-c_1*f_off*(1+v1/(p02))*exp(sfw*p0*(1-sqrt(1+v1/(p02))));
+
+.ENDS memristor
+**End of Netlist

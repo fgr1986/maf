@@ -1,0 +1,14 @@
+****************************************************************************************************
+** Spice MIM and threshold memristor circuit                                                      **
+** Eshraghian, K. et al, from                                                                     **
+** Memristive Device Fundamentals and Modeling: Applications to Circuits and Systems Simulation   **
+** Proceedings of the IEEE, 2012                                                                  **
+** Ports: Plus, Minus                                                                             **
+****************************************************************************************************
+** Standard Scheme                                                                                **
+****************************************************************************************************
+
+*********************************************
+** Subcircuit and Parameters
+*********************************************
+.SUBCKT memristor Plus Minus PARAMS:

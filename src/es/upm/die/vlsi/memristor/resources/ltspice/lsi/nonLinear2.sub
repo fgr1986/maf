@@ -1,0 +1,21 @@
+
+*********************************************
+**State equations modeling
+*********************************************
+*Parameter
++ p2=p*2
+Ew w 0 value={limit(0, idt(I(Rm)*uv*Ron/pow(D,2)*f(V(w),I(Rm),p2), w_init), 1)}
+
+Rm Plus Minus R=Ron*V(w)+Roff*(1-V(w))
+
+****** Joglekar Window function ******
+*.func f(x,p2)={1-(2*x-1)**(p2)}
+
+*********** Biolek Window Function ***********
+.func f(x,i,p2)={limit(0, 1-pow(x-stp(-i),(p2)), 1)}
+
+*********** Prodromakis Window Function ***********
+*.func f(x,i,p)={1-((x-0.5)**2 +0.75)**p}
+
+.ENDS memristor
+

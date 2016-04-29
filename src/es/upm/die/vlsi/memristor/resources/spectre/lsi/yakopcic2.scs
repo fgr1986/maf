@@ -1,0 +1,33 @@
+
+////////////////////////////////////////////
+/// State equations modeling
+////////////////////////////////////////////
+
+// Constants
++ Xp_1=(1-Xp) Xn_1=(1-Xn)
+
+// State variables
+
+Edx (dx 0) bsource v=stp(v(Plus, Minus) - Vp)*Ap*(exp(v(Plus, Minus))-exp(Vp))*winYakopcicPositive(v(x)) -stp(-v(Plus, Minus)-Vn)*An*(exp(-v(Plus, Minus))-exp(Vn))*winYakopcicNegative(v(x))
+
+EX (x 0) bsource v=idt(v(dx), x_init)  max_val=1 min_val=0
+GI (Plus Minus) bsource i=a1*v(x)*sinh(b*(v(Plus, Minus)))*stp(v(Plus, Minus)) + a2*v(x)*sinh(b*(v(Plus, Minus)))*stp(-v(Plus, Minus))
+
+// winYakopcicON
+real winYakopcicPositive(real x) {
+	return   exp(-alphaP*(x - Xp))* ((Xp-x)/Xp_1 +1) *stp(x-Xp) + stp(Xp-x);
+}
+// winYakopcicOFF
+real  winYakopcicNegative(real x) {
+	return exp(alphaN*(x + Xn + 1))* (x/Xn_1) *stp(Xn_1-x) + stp(x-1+Xn) ;
+}
+// step function
+real stp(real a) {
+	return max(0,sgn(a));
+}
+
+ends memristor
+
+
+
+

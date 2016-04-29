@@ -1,0 +1,18 @@
+*********************************************
+** MAF v1.3
+*********************************************
+**STATE EQUATION MODELING
+*********************************************
+
+
+** Constants
++ Xp_1=(1-Xp) Xn_1=(1-Xn)
+
+** Improvements 2 Better
+EG dx 0 value={IF(V(Plus, Minus)>Vp,Ap*(exp(V(Plus, Minus))-exp(Vp))*winYakopcicPositive(V(x)),
+  + -An*(exp(-V(Plus, Minus))-exp(Vn))*winYakopcicNegative(V(X)))}
+GI Plus Minus value={IF(V(Plus, Minus)>0,a1*V(x)*sinh(b*V(Plus, Minus)),a2*V(x)*sinh(b*V(Plus, Minus)))}
+
+.func winYakopcicPositive(x) = IF(x>Xp,exp(-alphaP*(x - Xp))*((Xp-x)/Xp_1 +1),1)
+.func winYakopcicNegative(x) = IF(x>Xn_1,exp(alphaN*(x + Xn + 1))* (x/Xn_1),1)
+.ENDS memristor

@@ -1,0 +1,47 @@
+/////////////////////////////////////////////
+//STATE EQUATION MODELING
+/////////////////////////////////////////////
+// Constants
++ p2=2*p p02=2*p0 c_1=(1/c)
+//State variable
+EG (dw 0) bsource v=stp(w_max-V(w))*stp(v(Plus, Minus))*gon(v(Plus, Minus), sf(v(w))) + stp(v(w)-w_min)*stp(v(Minus, Plus))*goff(v(Plus, Minus), sf(v(w)))
+//Integration
+Ew (w 0) bsource v=idt(v(dw), w_init) max_val=1 min_val=0
+
+//Current
+G1 (Plus Minus)  bsource i=(v(w)**n)*a1*sinh(b1*v(Plus, Minus)) + a2*(exp(b2*v(Plus, Minus))-1)
+/////////////////////////////
+// MIM Threshold Functions //
+/////////////////////////////
+//shape function
+real sf(real w) {
+	return  sfo + sfm*(1- pow(2*w-1,p2));
+//	return  sfo + sfm*(1-(2*w-1)**(2*p))
+}
+//step function
+real stp(real v){
+	return max(sgn(v), 0);
+}
+
+//dw/dt positive contribution
+//real gon(real v1, real v2, real v3, real f_on){
+//	return c_1*f_on*(1-v1/(2*v3))*exp(v2*v3*(1-sqrt(1-v1/(2*v3))));
+//}
+//dw/dt negative contribution
+//real goff(real v1, real v2, real v3, real f_off){
+//	return -c_1*f_off*(1+v1/(2*v3))*exp(v2*v3*(1-sqrt(1+v1/(2*v3))));
+//}
+
+real gon(real v1, real sfw) {
+	return f_on*(1-v1/(p02))*exp(sfw*p0*(1-sqrt(1-v1/(p02))))
+}
+real goff(real v1, real sfw){
+	return -f_off*(1+v1/(p02))*exp(sfw*p0*(1-sqrt(1+v1/(p02))))
+}
+
+//Prevent division by 0
+real prevDivideBy0(real a, real b){
+	return (a/ max(1e-5, b));
+}
+ends memristor
+//End of Netlist

@@ -1,0 +1,7 @@
+
+
+Gm (Plus Minus) bsource i=a*pow(v(char), 3)+b*pow(v(char), 2)+c*v(char)+d 
+Gq (char 0) bsource v=idt(i(Gm))
+
+ends memristor
+

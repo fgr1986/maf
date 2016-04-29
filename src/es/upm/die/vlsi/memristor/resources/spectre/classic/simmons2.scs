@@ -1,0 +1,41 @@
+//Current generator
+G1 (Plus internal) bsource i=sgn(v(x))*pow((1/v(dw)), 2)*0.0617* (v(phiI)*exp(-v(B)*v(sr))-(v(phiI)+abs(v(x)))* exp(-v(B)*v(sr2)))
+//Auxiliar sources for square roots
+Esr (sr 0) bsource v=sqrt(abs(v(phiI)))
+Esr2 (sr2 0) bsource v=sqrt(abs(v(phiI)+abs(v(x))))
+//Auxiliar source for B
+EB (B 0) bsource v=constB*v(dw)
+//Min resistance
+Rs (internal Minus) resistor r=r_s
+//Auxiliar generator vg
+Eg (x 0) bsource v=v(Plus)-v(internal)
+//Auxiliar generator lambda
+Elamda (Lmda 0) bsource v=Lm/v(w)
+//Auxiliar w2 generator
+Ew2 (w2 0) bsource v=w1+v(w)- (constW2_1/(constW2_2+4*v(Lmda)-2*abs(v(x))))
+//Auxiliar w2-w1 source
+EDw (dw 0) bsource v=v(w2)-w1
+//Auxiliar source for Phi1
+Emon3 (mon3 0) bsource v=(v(w2)/w1)*(v(w)-w1)/(v(w)-v(w2))
+//Phi1 generator
+EphiI (phiI 0) bsource v=phio-abs(v(x))*((w1+v(w2))/(2*v(w)))- 1.15*v(Lmda)*v(w)*log(v(mon3))/v(dw)
+//Integrator
+C1 (w 0) capacitor c=c_1 ic=c_init
+//DC Path
+Raux (w 0) resistor r=r_aux
+//Current module
+Ec (c 0) bsource v=abs(v(internal)-v(Minus))/r_s
+//Auxiliar sources for the wDot variable
+Emon1 (mon1 0) bsource v=((v(w)-aoff)/wc)-(v(c)/b)
+Emon2 (mon2 0) bsource v=(aon-v(w))/wc-(v(c)/b)
+Goff (0 w) bsource i=foff*sinh(stepFunct(v(x))*v(c)/ioff)* exp(-exp(v(mon1))-v(w)/wc)
+Gon (w 0) bsource i=fon*sinh(stepFunct(-v(x))*v(c)/ion)* exp(-exp(v(mon2))-v(w)/wc)
+//Auxiliar sources for memristance
+//Emem (memristance 0) bsource v=preventDivideBy0(i(Rs), v(Plus) - v(Minus))f
+//step function
+real stepFunct(real a) {
+	return max(0,sgn(a));
+}
+
+ends memristor
+

@@ -1,0 +1,19 @@
+*********************************************
+**STATE EQUATION MODELING
+*********************************************
+GOFF 0 x value={k_off*((i(GI)/i_off-1)**alpha_off) * exp(-exp( (V(x)-a_off)/w_c ))*signm(I(GI)-i_off)}
+GON 0 x value={k_on*((i(GI)/i_on-1)**alpha_off) * exp(-exp( (a_on - V(x))/w_c ))*signm(i_on-I(GI))}
+Cx x 0 1 IC={x_init}
+VXON d1n 0 {x_on}
+VXOFF d2n 0 {x_off}
+D1 d1n x D
+D2 x d2n D
+Raux x 0 1T
+EMemristance memristance 0 value={Ron*exp(lambda*(V(x)-x_on)/(x_off-x_on))}
+Raux2 memristance 0 100k
+GI Plus Minus value={V(Plus, Minus)/V(memristance)}
+
+**signm Returns 1 if v is positive, 0 if negative.
+.func signm(v) = (sgn(v)+1)/2;
+.ENDS memristor
+

@@ -1,0 +1,24 @@
+//State variable
+GFxON (0 x) bsource i=stepFunct(v(Plus, Minus) - Vp)*Ap*(exp(v(Plus, Minus))-exp(Vp))*winYakopcicON(v(x), Xp, Xn)
+GFxOFF (0 x) bsource i=-stepFunct(-v(Plus, Minus)-Vn)*An*(exp(-v(Plus, Minus))-exp(Vn))*winYakopcicOFF(v(x),Xp, Xn)
+Raux (x 0) resistor r=1T
+Cx (x 0) capacitor c=1
+ic x=x_init
+GI (Plus Minus) bsource i=a1*v(x)*sinh(b*(v(Plus, Minus)))*stepFunct(v(Plus, Minus)) + a2*v(x)*sinh(b*(v(Plus, Minus)))*stepFunct(-v(Plus, Minus))
+
+// winYakopcicON
+real winYakopcicON(real x, real Xp, real Xn) {
+	return  exp(-alphaP*(x - Xp))* ((Xp-x)/(1-Xp) +1) *stepFunct(x-Xp) + stepFunct(Xp-x);
+}
+// winYakopcicOFF
+real  winYakopcicOFF(real x, real Xp, real Xn) {
+	return exp(alphaN*(x + Xn + 1))* (x/(1-Xn)) *stepFunct(1-x-Xn) + stepFunct(x-1+Xn) ;
+}
+// step function
+real stepFunct(real a) {
+	return max(0,sgn(a));
+}
+
+ends memristor
+
+

@@ -1,0 +1,9 @@
+*********************************************
+**State equations modeling
+*********************************************
+EMemristance memristance 0 value={a*(idt(I(G1))**3)+b*(idt(I(G1))**2)+c*idt(I(G1))+d }
+Raux2 memristance 0 100k
+
+G1 Plus Minus value={V(Plus, Minus)/V(memristance)}
+.ENDS memristor
+

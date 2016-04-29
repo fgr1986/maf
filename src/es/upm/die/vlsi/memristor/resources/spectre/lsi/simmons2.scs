@@ -1,0 +1,32 @@
+
+/////////////////////////////////////////////
+// State equation modeling
+/////////////////////////////////////////////
+
+//constants
++ Lm=0.0998 w1=0.1261 r_aux = 1e14
+//Current generator
+G1 (Plus internal) bsource i=sgn(v(Plus, internal))*pow((1/(v(w2)-w1)),2)*0.0617* (v(phiI)*exp(-(10.246*(v(w2)-w1))*v(sr))-(v(phiI)+abs(v(Plus, internal)))* exp(-(10.246*(v(w2)-w1))*v(sr2)))
+//Auxiliar sources for square roots
+Esr (sr 0) bsource v=sqrt(v(phiI))
+Esr2 (sr2 0) bsource v=sqrt(v(phiI)+abs(v(Plus, internal)))
+//Internal resistance
+Rs (internal Minus) resistor r=Rs
+//Auxiliar sources
+Ew2 (w2 0) bsource v=w1+v(w)- (0.9183/(2.85+4*(Lm/v(w))-2*abs(v(Plus, internal))))
+ER (R 0) bsource v=(v(w2)/w1)*(v(w)-w1)/(v(w)-v(w2))
+EphiI (phiI 0) bsource v=phio-abs(v(Plus, internal))*((w1+v(w2))/(2*v(w)))- 1.15*(Lm/v(w))*v(w)*log(v(R))/(v(w2)-w1)
+//state variable
+Ew (w 0) bsource v=idt(f_off*sinh(stp(v(Plus, internal))*i(Rs)/i_off)* exp(-exp(v(mon1))-v(w)/w_c)*stp(I(G1)) - f_on*sinh(stp(-v(Plus, internal))*i(Rs)/i_on)* exp(-exp(v(mon2))-v(w)/w_c)*stp(-I(G1)), w_init)
+
+Emon1 (mon1 0) bsource v=((v(w)-a_off)/w_c)-(i(Rs)/b)
+Emon2 (mon2 0) bsource v=(a_on-v(w))/w_c-(i(Rs)/b)
+
+
+//step function
+real stp(real a) {
+	return max(0,sgn(a));
+}
+
+ends memristor
+

@@ -1,0 +1,26 @@
+// State variable
+GOFF (0 x) bsource i=k_off*pow(i(GI)/i_off-1, alpha_off) * exp(-exp( (v(x)-a_off)/w_c ))*stepFunct(i(GI)-i_off)
+GON (0 x) bsource i=k_on*pow(i(GI)/i_on-1, alpha_off) * exp(-exp( (a_on - v(x))/w_c ))*stepFunct(i_on-i(GI))
+//GOFF (0 x) bsource i=k_off*pow(i(Rm)/i_off-1, alpha_off) * exp(-exp( (v(x)-a_off)/w_c ))*stepFunct(i(Rm)-i_off)
+//GON (0 x) bsource i=k_on*pow(i(Rm)/i_on-1, alpha_off) * exp(-exp( (a_on - v(x))/w_c ))*stepFunct(i_on-i(Rm))
+Cw (x 0) capacitor c=1
+ic x=x_init
+VXON (d1n 0) vsource dc=x_on type=dc
+VXOFF (d2n 0) vsource dc=x_off type=dc
+D1 (d1n x) pdiode l=3e-4 w=2.5e-4 area=1
+D2 (x d2n) pdiode l=3e-4 w=2.5e-4 area=1
+model pdiode diode is=1.8e-5 rs=1.43 n=1.22
+Raux (x 0) resistor r=1T
+
+//Rm (Plus Minus) bsource r=Ron*exp(lambda*(v(x)-x_on)/(x_off-x_on))
+Em (memristance 0) bsource v=Ron*exp(lambda*(v(x)-x_on)/(x_off-x_on))
+Raux2 (memristance 0) resistor r=100k
+GI (Plus Minus) bsource i=v(Plus, Minus)/v(memristance)
+
+//step function
+real stepFunct(real a) {
+	return max(0,sgn(a));
+}
+
+ends memristor
+

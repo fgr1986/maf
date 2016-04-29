@@ -1,0 +1,18 @@
+*********************************************
+**STATE EQUATION MODELING
+*********************************************
+Goff 0 w value={f_off*sinh(stp(V(Plus, Minus))*I(G1)/i_off)* exp(-exp(((V(w)-a_off)/w_c)-(I(G1)/b))-V(w)/w_c)}
+Gon w 0 value={f_on*sinh(stp(-V(Plus, Minus))*I(G1)/i_on)* exp(-exp((a_on-V(w))/w_c-(I(G1)/b))-V(w)/w_c)}
+Raux w 0 1T
+C1 w 0 1e-9 IC={w_init}
+D1 d1n w D
+D2 w d2n D
+VXON d1n 0 {x_on}
+VXOFF d2n 0 {x_off}
+
+EMemristance memristance 0 value={Ron*exp(lambda*(V(w)-x_on)/(x_off-x_on))}
+Raux2 memristance 0 100k
+
+G1 Plus Minus value={V(Plus, Minus)/V(memristance)}
+.ENDS memristor
+

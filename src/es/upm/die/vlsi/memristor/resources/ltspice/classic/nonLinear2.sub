@@ -1,0 +1,21 @@
+*********************************************
+**STATE EQUATION MODELING
+*********************************************
+Gw 0 w value={I(E1)*uv*Ron/pow(D,2)*f(V(w),I(E1),p)}
+Cw w 0 1 IC={w_init}
+Raux w 0 1T
+
+********** Resistive Port of the Memristor *********
+E1 plus x value={-I(E1)*V(w)*(Roff-Ron)}
+Roff x minus {Roff}
+
+****** Joglekar Window function ******
+*.func f(x,p)={1-(2*x-1)**(2*p)}
+
+*********** Biolek Window Function ***********
+.func f(x,i,p)={min(max(1-pow(x-stp(-i),(2*p)), 0), 1)}
+
+*********** Prodromakis Window Function ***********
+*.func f(x,i,p)={1-pow(pow(x-0.5,2) +0.75,p)}
+
+.ENDS memristor

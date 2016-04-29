@@ -1,0 +1,36 @@
+
+// Constants
++p2=p*2
+
+//////// Differential Equation Modeling ////////
+
+Ew (w 0) bsource v=idt(i(E1)*uv*Ron/pow(D,2) *f(v(w),i(E1),p), wInit)
+
+////////// Resistive Port of the Memristor ////////
+//Rm (Plus Minus) bsource r=Ron*v(w)+Roff*(1-v(w))
+Gm (Plus Minus) bsource i=v(Plus, Minus)/(Ron*v(w)+Roff*(1-v(w)))
+
+//////////* Computation of the Flux ////////////*
+//Eflux flux 0 value={SDT(V(plus,minus))}
+
+//////////* Computation of the Charge //////////*
+//Echarge charge 0 value={SDT(I(Emem))}
+
+
+//Joglekar Window function 
+//real f(real a) {
+//	return 1-pow((2*x-1),p2);
+//}
+
+// Biolek Window Function 
+real f(real x, real i, real p) {
+	return	min(max(1-pow(x-stepFunct(-i),p2), 0), 1);
+}
+
+//Prodomakis Window
+//real f(real x, real i, real p) {
+//	return 1-pow(pow(x-0.5,2) +0.75,p);
+//}
+
+ends memristor
+
