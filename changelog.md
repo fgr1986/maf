@@ -1,4 +1,4 @@
-#Changelog of version v1.8.4b
+# Changelog of version v1.8.4c
 * Changelog from version v1.8.2-1.8.4b
     * **aSiC model: aSiC device correctly fitted**
 
