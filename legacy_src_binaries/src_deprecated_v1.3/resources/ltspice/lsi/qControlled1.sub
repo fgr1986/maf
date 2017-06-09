@@ -1,0 +1,11 @@
+**************************************************
+** Linear charge controlled memristor circuit   **
+** Ports: Plus, Minus                           **
+**************************************************
+** Improved LSI Scheme                          **
+**************************************************
+
+*********************************************
+** Subcircuit and Parameters
+*********************************************
+.SUBCKT memristor Plus Minus PARAMS:

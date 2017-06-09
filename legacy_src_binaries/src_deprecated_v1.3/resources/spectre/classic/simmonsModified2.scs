@@ -1,0 +1,26 @@
+// State variables
+
+GOFF (0 w) bsource i=f_off*sinh(stepFunct(v(Plus, Minus))*i(GI)/i_off)* exp(-exp(((v(w)-a_off)/w_c)-(i(GI)/b))-v(w)/w_c)
+GON (w 0) bsource i=f_on*sinh(stepFunct(-v(Plus, Minus))*i(GI)/i_on)* exp(-exp((a_on-v(w))/w_c-(i(GI)/b))-v(w)/w_c)
+Raux (w 0) resistor r=1T
+Cw (w 0) capacitor c=1e-9
+ic w=w_init
+VXON (d1n 0) vsource dc=x_on type=dc
+VXOFF (d2n 0) vsource dc=x_off type=dc
+D1 (d1n w) pdiode l=3e-4 w=2.5e-4 area=1
+D2 (w d2n) pdiode l=3e-4 w=2.5e-4 area=1
+model pdiode diode is=1.8e-5 rs=1.43 n=1.22
+
+//Rm (Plus Minus) bsource r=Ron*exp(lambda*(v(w)-x_on)/(x_off-x_on))
+Em (memristance 0) bsource v=Ron*exp(lambda*(v(w)-x_on)/(x_off-x_on))
+ic memristance=Ron*exp(lambda*(w_init-x_on)/(x_off-x_on))
+Raux2 (memristance 0) resistor r=100k
+GI (Plus Minus) bsource i=v(Plus, Minus)/v(memristance)
+
+//step function
+real stepFunct(real a) {
+	return max(0,sgn(a));
+}
+
+ends memristor
+

@@ -1,0 +1,43 @@
+/////////////////////////////////////////////
+//STATE EQUATION MODELING
+/////////////////////////////////////////////
+//State variable
+Gvon (0 w) bsource i=signm(wmax - v(w))*signm(v(Plus, Minus))*gon(v(Plus, Minus), sf(v(w), sfo, sfm, p), p0, fon)
+Gvoff (0 w) bsource i=signm(v(w)-wmin)*signm(v(Minus, Plus))*goff(v(Plus, Minus), sf(v(w),  sfo, sfm, p), p0, foff)
+//Integration
+Cw (w 0) capacitor c=C
+ic w=w_init
+Raux (w 0) resistor r=1T
+//Current
+G1 Plus Minus  bsource i=pow(v(w), n)*a1*sinh(b1*v(Plus, Minus)) + a2*(exp(b2*v(Plus, Minus))-1)
+/////////////////////////////
+// MIM Threshold Functions //
+/////////////////////////////
+//step function
+real stepFunct(real a) {
+	return max(0,sgn(a));
+}
+//shape function
+real sf(real w, real sfo, real sfm, real p) {
+	return  max(0, sfo + sfm*(1-pow(2*w-1, 2*p)));
+}
+//signm Returns 1/2 if v is positive, 0 if negative.
+real signm(real v){
+	return (sgn(v)+1)/2;
+}
+
+//dw/dt positive contribution
+real gon(real v1, real v2, real v3, real fon){
+	return fon*(1-v1/(2*v3))*exp(v2*v3*(1-sqrt(1-v1/(2*v3))));
+}
+//dw/dt negative contribution
+real goff(real v1, real v2, real v3, real foff){
+	return -foff*(1+v1/(2*v3))*exp(v2*v3*(1-sqrt(1+v1/(2*v3))));
+}
+
+//Prevent division by 0
+real prevDivideBy0(real a, real b){
+	return (a/ max(1e-5, b));
+}
+ends memristor
+//End of Netlist

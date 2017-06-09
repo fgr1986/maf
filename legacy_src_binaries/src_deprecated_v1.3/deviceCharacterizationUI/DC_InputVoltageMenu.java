@@ -1,0 +1,584 @@
+package deviceCharacterizationUI;
+
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+
+import simulationObjects.InputVoltage;
+import simulationObjects.InputVoltageParameter;
+import simulationObjects.ResourcesAndUsefulFunctions;
+import simulationObjects.Timing;
+
+public class DC_InputVoltageMenu extends Composite {
+	private Text textPulseDelayMean;
+	private Text textSineFreqMean;
+	private Text textSineVampMean;
+	private Text textPulseV1Mean;
+	private Text textPulseV2Mean;
+	private Text textPulseV1DurationMean;
+	private Text textPulseV2DurationMean;
+	private Text textPulseSlopeMean;
+	private Text textTriangleSlopeUpMean;
+	private Text textTriangleSlopeDownMean;
+	private Text textTriangleVampMean;
+	private Text textSineVOffsetMean;
+	private Text textTriangleVOffsetMean;
+	private Button buttonSineMean;
+	private Button buttonPulseMean;
+	private Button buttonTriangleMean;
+	private Text textPulseDelayVariation;
+	private Text textSineFreqVariation;
+	private Text textSineAmpVariation;
+	private Text textPulseV1Variation;
+	private Text textPulseV2Variation;
+	private Text textPulseV1DurationVariation;
+	private Text textPulseV2DurationVariation;
+	private Text textPulseSlopeVariation;
+	private Text textTriangleSlopeUpVariation;
+	private Text textTriangleSlopeDownVariation;
+	private Text textTriangleVAmpVariation;
+	private Text textSineOffsetVariation;
+	private Text textTriangleVOffsetVariation;
+	private Group compositeVariationValues;
+	private Button checkTriangleVariation;
+	private Button checkSineVariation;
+	private Button checkPulseVariation;
+
+	/**
+	 * Create the compositeMeanValues.
+	 * 
+	 * @param parent
+	 * @param style
+	 */
+	public DC_InputVoltageMenu(Composite parent, int style) {
+		super(parent, SWT.NONE);
+
+		Group compositeMeanValues = new Group(this, SWT.SHADOW_ETCHED_IN);
+		compositeMeanValues.setLocation(0, 0);
+		compositeMeanValues.setSize(735, 232);
+		compositeMeanValues.setText("Input voltage parameter mean values");
+
+		buttonSineMean = new Button(compositeMeanValues, SWT.RADIO);
+		buttonSineMean.setSelection(true);
+		buttonSineMean.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkSineVariation.setEnabled(true);
+				checkPulseVariation.setEnabled(false);
+				checkTriangleVariation.setEnabled(false);
+				
+				textSineVampMean.setEnabled(true);
+				textSineFreqMean.setEnabled(true);
+				textSineVOffsetMean.setEnabled(true);
+				textPulseDelayMean.setEnabled(false);
+				textPulseV1Mean.setEnabled(false);
+				textPulseV1DurationMean.setEnabled(false);
+				textPulseV2Mean.setEnabled(false);
+				textPulseV2DurationMean.setEnabled(false);
+				textPulseSlopeMean.setEnabled(false);
+				textTriangleSlopeUpMean.setEnabled(false);
+				textTriangleSlopeDownMean.setEnabled(false);
+				textTriangleVOffsetMean.setEnabled(false);
+				textTriangleVampMean.setEnabled(false);
+
+				textSineAmpVariation.setEnabled(true);
+				textSineFreqVariation.setEnabled(true);
+				textSineOffsetVariation.setEnabled(true);
+				textPulseDelayVariation.setEnabled(false);
+				textPulseV1Variation.setEnabled(false);
+				textPulseV1DurationVariation.setEnabled(false);
+				textPulseV2Variation.setEnabled(false);
+				textPulseV2DurationVariation.setEnabled(false);
+				textPulseSlopeVariation.setEnabled(false);
+				textTriangleSlopeUpVariation.setEnabled(false);
+				textTriangleSlopeDownVariation.setEnabled(false);
+				textTriangleVOffsetVariation.setEnabled(false);
+				textTriangleVAmpVariation.setEnabled(false);
+			}
+		});
+		buttonSineMean.setText("Sine");
+		buttonSineMean.setBounds(10, 36, 62, 22);
+
+		buttonPulseMean = new Button(compositeMeanValues, SWT.RADIO);
+		buttonPulseMean.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkSineVariation.setEnabled(false);
+				checkPulseVariation.setEnabled(true);
+				checkTriangleVariation.setEnabled(false);
+				
+				textSineVampMean.setEnabled(false);
+				textSineFreqMean.setEnabled(false);
+				textSineVOffsetMean.setEnabled(false);
+				textPulseDelayMean.setEnabled(true);
+				textPulseV1Mean.setEnabled(true);
+				textPulseV1DurationMean.setEnabled(true);
+				textPulseV2Mean.setEnabled(true);
+				textPulseV2DurationMean.setEnabled(true);
+				textPulseSlopeMean.setEnabled(true);
+				textTriangleSlopeUpMean.setEnabled(false);
+				textTriangleSlopeDownMean.setEnabled(false);
+				textTriangleVOffsetMean.setEnabled(false);
+				textTriangleVampMean.setEnabled(false);
+
+				textSineAmpVariation.setEnabled(false);
+				textSineFreqVariation.setEnabled(false);
+				textSineOffsetVariation.setEnabled(false);
+				textPulseDelayVariation.setEnabled(true);
+				textPulseV1Variation.setEnabled(true);
+				textPulseV1DurationVariation.setEnabled(true);
+				textPulseV2Variation.setEnabled(true);
+				textPulseV2DurationVariation.setEnabled(true);
+				textPulseSlopeVariation.setEnabled(true);
+				textTriangleSlopeUpVariation.setEnabled(false);
+				textTriangleSlopeDownVariation.setEnabled(false);
+				textTriangleVOffsetVariation.setEnabled(false);
+				textTriangleVAmpVariation.setEnabled(false);
+			}
+		});
+		buttonPulseMean.setText("Pulse");
+		buttonPulseMean.setBounds(10, 79, 62, 22);
+
+		buttonTriangleMean = new Button(compositeMeanValues, SWT.RADIO);
+		buttonTriangleMean.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkSineVariation.setEnabled(false);
+				checkPulseVariation.setEnabled(false);
+				checkTriangleVariation.setEnabled(true);
+				
+				textSineVampMean.setEnabled(false);
+				textSineFreqMean.setEnabled(false);
+				textSineVOffsetMean.setEnabled(false);
+				textPulseDelayMean.setEnabled(false);
+				textPulseV1Mean.setEnabled(false);
+				textPulseV1DurationMean.setEnabled(false);
+				textPulseV2Mean.setEnabled(false);
+				textPulseV2DurationMean.setEnabled(false);
+				textPulseSlopeMean.setEnabled(false);
+				textTriangleSlopeUpMean.setEnabled(true);
+				textTriangleSlopeDownMean.setEnabled(true);
+				textTriangleVOffsetMean.setEnabled(true);
+				textTriangleVampMean.setEnabled(true);
+
+				textSineAmpVariation.setEnabled(false);
+				textSineFreqVariation.setEnabled(false);
+				textSineOffsetVariation.setEnabled(false);
+				textPulseDelayVariation.setEnabled(false);
+				textPulseV1Variation.setEnabled(false);
+				textPulseV1DurationVariation.setEnabled(false);
+				textPulseV2Variation.setEnabled(false);
+				textPulseV2DurationVariation.setEnabled(false);
+				textPulseSlopeVariation.setEnabled(false);
+				textTriangleSlopeUpVariation.setEnabled(true);
+				textTriangleSlopeDownVariation.setEnabled(true);
+				textTriangleVOffsetVariation.setEnabled(true);
+				textTriangleVAmpVariation.setEnabled(true);
+			}
+		});
+		buttonTriangleMean.setText("Triangle");
+		buttonTriangleMean.setBounds(10, 159, 75, 22);
+		textPulseDelayMean = new Text(compositeMeanValues, SWT.BORDER);
+		textPulseDelayMean.setEnabled(false);
+		textPulseDelayMean.setText("50e-9");
+		textPulseDelayMean.setBounds(202, 79, 52, 26);
+
+		textSineFreqMean = new Text(compositeMeanValues, SWT.BORDER);
+		textSineFreqMean.setText("1");
+		textSineFreqMean.setBounds(192, 32, 62, 26);
+
+		Label label_1 = new Label(compositeMeanValues, SWT.NONE);
+		label_1.setText("Freq(Hz):");
+		label_1.setBounds(91, 38, 63, 16);
+
+		Label label_2 = new Label(compositeMeanValues, SWT.NONE);
+		label_2.setText("Vamp (V):");
+		label_2.setBounds(275, 38, 75, 16);
+
+		textSineVampMean = new Text(compositeMeanValues, SWT.BORDER);
+		textSineVampMean.setText("1.5");
+		textSineVampMean.setBounds(388, 32, 62, 26);
+
+		Label label_3 = new Label(compositeMeanValues, SWT.NONE);
+		label_3.setText("Delay(s):");
+		label_3.setBounds(91, 85, 63, 16);
+
+		Label label_4 = new Label(compositeMeanValues, SWT.NONE);
+		label_4.setText("V1 amp (V):");
+		label_4.setBounds(275, 85, 86, 16);
+
+		textPulseV1Mean = new Text(compositeMeanValues, SWT.BORDER);
+		textPulseV1Mean.setEnabled(false);
+		textPulseV1Mean.setText("2");
+		textPulseV1Mean.setBounds(388, 75, 62, 26);
+
+		Label label_5 = new Label(compositeMeanValues, SWT.NONE);
+		label_5.setText("V2 amp (V):");
+		label_5.setBounds(470, 85, 86, 16);
+
+		textPulseV2Mean = new Text(compositeMeanValues, SWT.BORDER);
+		textPulseV2Mean.setEnabled(false);
+		textPulseV2Mean.setText("0");
+		textPulseV2Mean.setBounds(602, 75, 55, 26);
+
+		Label label_6 = new Label(compositeMeanValues, SWT.NONE);
+		label_6.setText("V1 duration (s):");
+		label_6.setBounds(91, 119, 105, 16);
+
+		textPulseV1DurationMean = new Text(compositeMeanValues, SWT.BORDER);
+		textPulseV1DurationMean.setEnabled(false);
+		textPulseV1DurationMean.setText("200e-9");
+		textPulseV1DurationMean.setBounds(202, 109, 52, 26);
+
+		textPulseV2DurationMean = new Text(compositeMeanValues, SWT.BORDER);
+		textPulseV2DurationMean.setEnabled(false);
+		textPulseV2DurationMean.setText("300e-9");
+		textPulseV2DurationMean.setBounds(388, 107, 62, 26);
+
+		Label label_7 = new Label(compositeMeanValues, SWT.NONE);
+		label_7.setText("V2 duration (s):");
+		label_7.setBounds(275, 119, 107, 16);
+
+		Label label_8 = new Label(compositeMeanValues, SWT.NONE);
+		label_8.setText("Slope duration (s):");
+		label_8.setBounds(470, 119, 126, 16);
+
+		textPulseSlopeMean = new Text(compositeMeanValues, SWT.BORDER);
+		textPulseSlopeMean.setEnabled(false);
+		textPulseSlopeMean.setText("10e-9");
+		textPulseSlopeMean.setBounds(602, 109, 55, 26);
+
+		Label label_9 = new Label(compositeMeanValues, SWT.NONE);
+		label_9.setText("Up slope duration (s):");
+		label_9.setBounds(116, 165, 151, 16);
+
+		textTriangleSlopeUpMean = new Text(compositeMeanValues, SWT.BORDER);
+		textTriangleSlopeUpMean.setText("0.5");
+		textTriangleSlopeUpMean.setEnabled(false);
+		textTriangleSlopeUpMean.setBounds(275, 161, 62, 26);
+
+		textTriangleSlopeDownMean = new Text(compositeMeanValues, SWT.BORDER);
+		textTriangleSlopeDownMean.setText("0.5");
+		textTriangleSlopeDownMean.setEnabled(false);
+		textTriangleSlopeDownMean.setBounds(562, 161, 70, 26);
+
+		Label label_10 = new Label(compositeMeanValues, SWT.NONE);
+		label_10.setText("Down slope duration (s):");
+		label_10.setBounds(396, 165, 160, 16);
+
+		Label label_11 = new Label(compositeMeanValues, SWT.NONE);
+		label_11.setText("Vamp (V):");
+		label_11.setBounds(116, 203, 85, 16);
+
+		textTriangleVampMean = new Text(compositeMeanValues, SWT.BORDER);
+		textTriangleVampMean.setText("1.5");
+		textTriangleVampMean.setEnabled(false);
+		textTriangleVampMean.setBounds(275, 193, 61, 26);
+
+		textSineVOffsetMean = new Text(compositeMeanValues, SWT.BORDER);
+		textSineVOffsetMean.setText("0");
+		textSineVOffsetMean.setBounds(602, 32, 55, 26);
+
+		Label label_12 = new Label(compositeMeanValues, SWT.NONE);
+		label_12.setText("V offset(V):");
+		label_12.setBounds(523, 36, 73, 16);
+
+		textTriangleVOffsetMean = new Text(compositeMeanValues, SWT.BORDER);
+		textTriangleVOffsetMean.setText("0");
+		textTriangleVOffsetMean.setEnabled(false);
+		textTriangleVOffsetMean.setBounds(562, 193, 70, 26);
+
+		Label label_13 = new Label(compositeMeanValues, SWT.NONE);
+		label_13.setText("V offset(V):");
+		label_13.setBounds(396, 198, 73, 16);
+
+		Label label_14 = new Label(compositeMeanValues, SWT.SEPARATOR
+				| SWT.HORIZONTAL);
+		label_14.setBounds(10, 151, 668, 2);
+
+		Label label_15 = new Label(compositeMeanValues, SWT.SEPARATOR
+				| SWT.HORIZONTAL);
+		label_15.setBounds(10, 64, 668, 2);
+
+		compositeVariationValues = new Group(this, SWT.SHADOW_ETCHED_IN);
+		compositeVariationValues.setLocation(0, 243);
+		compositeVariationValues.setSize(735, 232);
+		compositeVariationValues
+				.setText("Input voltage parameter variations, values are given in % from the parameter mean value.\n");
+
+		checkSineVariation =  new Button(compositeVariationValues,
+				SWT.CHECK);
+		checkSineVariation.setSelection(true);
+		checkSineVariation.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				textSineFreqVariation.setEnabled(checkSineVariation.getSelection());
+				textSineAmpVariation.setEnabled(checkSineVariation.getSelection());
+				textSineOffsetVariation.setEnabled(checkSineVariation.getSelection());		
+			}
+		});
+		checkSineVariation.setText("Sine");
+		checkSineVariation.setBounds(10, 36, 62, 22);
+
+		checkPulseVariation = new Button(compositeVariationValues,
+				SWT.CHECK);
+		checkPulseVariation.setEnabled(false);
+		checkPulseVariation.setSelection(true);
+		checkPulseVariation.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				textPulseDelayVariation.setEnabled(checkPulseVariation.getSelection());
+				textPulseV1Variation.setEnabled(checkPulseVariation.getSelection());
+				textPulseV2Variation.setEnabled(checkPulseVariation.getSelection());		
+				textPulseV1DurationVariation.setEnabled(checkPulseVariation.getSelection());
+				textPulseV2DurationVariation.setEnabled(checkPulseVariation.getSelection());	
+				textPulseSlopeVariation.setEnabled(checkPulseVariation.getSelection());		
+			}
+		});
+		checkPulseVariation.setText("Pulse");
+		checkPulseVariation.setBounds(10, 79, 62, 22);
+
+		checkTriangleVariation = new Button(compositeVariationValues,
+				SWT.CHECK);
+		checkTriangleVariation.setEnabled(false);
+		checkTriangleVariation.setSelection(true);
+		checkTriangleVariation.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				textTriangleSlopeUpVariation.setEnabled(checkTriangleVariation.getSelection());
+				textTriangleSlopeDownVariation.setEnabled(checkTriangleVariation.getSelection());
+				textTriangleVAmpVariation.setEnabled(checkTriangleVariation.getSelection());
+				textTriangleVOffsetVariation.setEnabled(checkTriangleVariation.getSelection());
+			}
+		});
+
+		checkTriangleVariation.setText("Triangle");
+		checkTriangleVariation.setBounds(10, 159, 86, 22);
+
+		textPulseDelayVariation = new Text(compositeVariationValues, SWT.BORDER);
+		textPulseDelayVariation.setText("2e-9");
+		textPulseDelayVariation.setEnabled(false);
+		textPulseDelayVariation.setBounds(199, 75, 55, 26);
+
+		textSineFreqVariation = new Text(compositeVariationValues, SWT.BORDER);
+		textSineFreqVariation.setText("0.01");
+		textSineFreqVariation.setBounds(192, 32, 62, 26);
+
+		Label label = new Label(compositeVariationValues, SWT.NONE);
+		label.setText("Freq(Hz):");
+		label.setBounds(91, 38, 63, 16);
+
+		Label label_16 = new Label(compositeVariationValues, SWT.NONE);
+		label_16.setText("Vamp (V):");
+		label_16.setBounds(275, 38, 75, 16);
+
+		textSineAmpVariation = new Text(compositeVariationValues, SWT.BORDER);
+		textSineAmpVariation.setText("0.1");
+		textSineAmpVariation.setBounds(388, 32, 62, 26);
+
+		Label label_17 = new Label(compositeVariationValues, SWT.NONE);
+		label_17.setText("Delay(s):");
+		label_17.setBounds(91, 85, 63, 16);
+
+		Label label_18 = new Label(compositeVariationValues, SWT.NONE);
+		label_18.setText("V1 amp (V):");
+		label_18.setBounds(275, 85, 86, 16);
+
+		textPulseV1Variation = new Text(compositeVariationValues, SWT.BORDER);
+		textPulseV1Variation.setText("0.1");
+		textPulseV1Variation.setEnabled(false);
+		textPulseV1Variation.setBounds(388, 75, 62, 26);
+
+		Label label_19 = new Label(compositeVariationValues, SWT.NONE);
+		label_19.setText("V2 amp (V):");
+		label_19.setBounds(470, 85, 86, 16);
+
+		textPulseV2Variation = new Text(compositeVariationValues, SWT.BORDER);
+		textPulseV2Variation.setText("0");
+		textPulseV2Variation.setEnabled(false);
+		textPulseV2Variation.setBounds(602, 75, 55, 26);
+
+		Label label_20 = new Label(compositeVariationValues, SWT.NONE);
+		label_20.setText("V1 duration (s):");
+		label_20.setBounds(91, 119, 105, 16);
+
+		textPulseV1DurationVariation = new Text(compositeVariationValues,
+				SWT.BORDER);
+		textPulseV1DurationVariation.setText("2e-9");
+		textPulseV1DurationVariation.setEnabled(false);
+		textPulseV1DurationVariation.setBounds(199, 109, 52, 26);
+
+		textPulseV2DurationVariation = new Text(compositeVariationValues,
+				SWT.BORDER);
+		textPulseV2DurationVariation.setText("0");
+		textPulseV2DurationVariation.setEnabled(false);
+		textPulseV2DurationVariation.setBounds(388, 107, 62, 26);
+
+		Label label_21 = new Label(compositeVariationValues, SWT.NONE);
+		label_21.setText("V2 duration (s):");
+		label_21.setBounds(275, 119, 107, 16);
+
+		Label label_22 = new Label(compositeVariationValues, SWT.NONE);
+		label_22.setText("Slope duration (s):");
+		label_22.setBounds(470, 119, 126, 16);
+
+		textPulseSlopeVariation = new Text(compositeVariationValues, SWT.BORDER);
+		textPulseSlopeVariation.setText("2e-9");
+		textPulseSlopeVariation.setEnabled(false);
+		textPulseSlopeVariation.setBounds(602, 109, 55, 26);
+
+		Label label_23 = new Label(compositeVariationValues, SWT.NONE);
+		label_23.setText("Up slope duration (s):");
+		label_23.setBounds(116, 165, 151, 16);
+
+		textTriangleSlopeUpVariation = new Text(compositeVariationValues,
+				SWT.BORDER);
+		textTriangleSlopeUpVariation.setText("0.05");
+		textTriangleSlopeUpVariation.setEnabled(false);
+		textTriangleSlopeUpVariation.setBounds(275, 161, 62, 26);
+
+		textTriangleSlopeDownVariation = new Text(compositeVariationValues,
+				SWT.BORDER);
+		textTriangleSlopeDownVariation.setText("0.1");
+		textTriangleSlopeDownVariation.setEnabled(false);
+		textTriangleSlopeDownVariation.setBounds(562, 161, 70, 26);
+
+		Label label_24 = new Label(compositeVariationValues, SWT.NONE);
+		label_24.setText("Down slope duration (s):");
+		label_24.setBounds(396, 165, 160, 16);
+
+		Label label_25 = new Label(compositeVariationValues, SWT.NONE);
+		label_25.setText("Vamp (V):");
+		label_25.setBounds(116, 203, 85, 16);
+
+		textTriangleVAmpVariation = new Text(compositeVariationValues,
+				SWT.BORDER);
+		textTriangleVAmpVariation.setText("0.1");
+		textTriangleVAmpVariation.setEnabled(false);
+		textTriangleVAmpVariation.setBounds(275, 193, 61, 26);
+
+		textSineOffsetVariation = new Text(compositeVariationValues,
+				SWT.BORDER);
+		textSineOffsetVariation.setText("0");
+		textSineOffsetVariation.setBounds(602, 32, 55, 26);
+
+		Label label_26 = new Label(compositeVariationValues, SWT.NONE);
+		label_26.setText("V offset(V):");
+		label_26.setBounds(523, 36, 73, 16);
+
+		textTriangleVOffsetVariation = new Text(compositeVariationValues,
+				SWT.BORDER);
+		textTriangleVOffsetVariation.setText("0");
+		textTriangleVOffsetVariation.setEnabled(false);
+		textTriangleVOffsetVariation.setBounds(562, 193, 70, 26);
+
+		Label label_27 = new Label(compositeVariationValues, SWT.NONE);
+		label_27.setText("V offset(V):");
+		label_27.setBounds(396, 198, 73, 16);
+
+		Label label_28 = new Label(compositeVariationValues, SWT.SEPARATOR
+				| SWT.HORIZONTAL);
+		label_28.setBounds(10, 151, 668, 2);
+
+		Label label_29 = new Label(compositeVariationValues, SWT.SEPARATOR
+				| SWT.HORIZONTAL);
+		label_29.setBounds(10, 64, 668, 2);
+	}
+
+	public InputVoltage getInputVoltage(Timing timing) {
+		InputVoltage iv = null;
+		try {
+			// retrieve input voltage
+			if (buttonSineMean.getSelection()) {
+				InputVoltageParameter sineFreq = new InputVoltageParameter(0, "sineFreq",
+						Double.parseDouble(textSineFreqMean.getText()), checkSineVariation.getSelection(),
+						Double.parseDouble(textSineFreqVariation.getText()),
+						Double.parseDouble(textSineFreqVariation.getText()));
+				InputVoltageParameter sineAmp =  new InputVoltageParameter(1, "sineAmp",
+						Double.parseDouble(textSineVampMean.getText()), checkSineVariation.getSelection(),
+						Double.parseDouble(textSineAmpVariation.getText()),
+						Double.parseDouble(textSineAmpVariation.getText()));
+				InputVoltageParameter sineOffset = new InputVoltageParameter(2, "sineOffset",
+						Double.parseDouble(textSineVOffsetMean.getText()), checkSineVariation.getSelection(),
+						Double.parseDouble(textSineOffsetVariation.getText()),
+						Double.parseDouble(textSineOffsetVariation.getText()));
+				iv = new InputVoltage(timing, sineFreq, sineAmp, sineOffset);
+			} else if (buttonPulseMean.getSelection()) {
+				InputVoltageParameter delay = new InputVoltageParameter(0, "pulseTDelay",
+						Double.parseDouble(textPulseDelayMean.getText()), checkPulseVariation.getSelection(),
+						Double.parseDouble(textPulseDelayVariation.getText()),
+						Double.parseDouble(textPulseDelayVariation.getText()));
+				InputVoltageParameter slope = new InputVoltageParameter(1, "pulseTSlope",
+						Double.parseDouble(textPulseSlopeMean.getText()), checkPulseVariation.getSelection(),
+						Double.parseDouble(textPulseSlopeVariation.getText()),
+						Double.parseDouble(textPulseSlopeVariation.getText()));
+				InputVoltageParameter v1Duration = new InputVoltageParameter(2, "pulseTV1",
+						Double.parseDouble(textPulseV1DurationMean.getText()), checkPulseVariation.getSelection(),
+						Double.parseDouble(textPulseV1DurationVariation.getText()),
+						Double.parseDouble(textPulseV1DurationVariation.getText()));
+				InputVoltageParameter v2Duration = new InputVoltageParameter(3, "pulseTV2",
+						Double.parseDouble(textPulseV2DurationMean.getText()), checkPulseVariation.getSelection(),
+						Double.parseDouble(textPulseV2DurationVariation.getText()),
+						Double.parseDouble(textPulseV2DurationVariation.getText()));
+				InputVoltageParameter v1 = new InputVoltageParameter(4, "pulseV1",
+						Double.parseDouble(textPulseV1Mean.getText()), checkPulseVariation.getSelection(),
+						Double.parseDouble(textPulseV1Variation.getText()),
+						Double.parseDouble(textPulseV1Variation.getText()));
+				InputVoltageParameter v2 = new InputVoltageParameter(5, "pulseV2",
+						Double.parseDouble(textPulseV2Mean.getText()), checkPulseVariation.getSelection(),
+						Double.parseDouble(textPulseV2Variation.getText()),
+						Double.parseDouble(textPulseV2Variation.getText()));
+				iv = new InputVoltage(timing, delay, slope, v1Duration,
+						v2Duration, v1, v2);
+
+			} else if (buttonTriangleMean.getSelection()) {
+				InputVoltageParameter slopeUp = new InputVoltageParameter(0, "triangleTUp",
+						Double.parseDouble(textTriangleSlopeUpMean.getText()), checkTriangleVariation.getSelection(),
+						Double.parseDouble(textTriangleSlopeUpVariation.getText()),
+						Double.parseDouble(textTriangleSlopeUpVariation.getText()));
+				InputVoltageParameter slopeDown = new InputVoltageParameter(1, "triangleTDown",
+						Double.parseDouble(textTriangleSlopeDownMean.getText()), checkTriangleVariation.getSelection(),
+						Double.parseDouble(textTriangleSlopeDownVariation.getText()),
+						Double.parseDouble(textTriangleSlopeDownVariation.getText()));
+				InputVoltageParameter vAmp = new InputVoltageParameter(2, "triangleAmp",
+						Double.parseDouble(textTriangleVampMean.getText()), checkTriangleVariation.getSelection(),
+						Double.parseDouble(textTriangleVAmpVariation.getText()),
+						Double.parseDouble(textTriangleVAmpVariation.getText()));
+				InputVoltageParameter vOffset =  new InputVoltageParameter(3, "triangleOffset",
+						Double.parseDouble(textTriangleVOffsetMean.getText()), checkTriangleVariation.getSelection(),
+						Double.parseDouble(textTriangleVOffsetVariation.getText()),
+						Double.parseDouble(textTriangleVOffsetVariation.getText()));
+				iv = new InputVoltage(timing, slopeUp, slopeDown, vAmp, vOffset);
+
+			}
+		} catch (Exception exc) {
+			MessageDialog.openWarning(new Shell(), "InputVoltageParameters error",
+					"Timing error: " + exc.getLocalizedMessage());
+			return null;
+		}
+		return iv;
+	}
+
+	public void setMontecarlo() {
+		compositeVariationValues
+				.setText("InputVoltageParameters variation values, given in % from the parameter mean value.");
+	}
+
+	public void setSpaceExploration() {
+		compositeVariationValues
+				.setText("InputVoltageParameters variation values, given as maximum variations ("
+						+ ResourcesAndUsefulFunctions.DELTA + ") from the parameter mean value.");
+	}
+
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
+}

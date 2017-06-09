@@ -1,0 +1,18 @@
+*************************************************************************************
+** Yakopcic Memristor Model, from "A Memristor Device Model"                       **
+** Yakopcic, C. and Taha, T.M. and Subramanyam, G. and Pino, R.E. and Rogers, S.   **
+** submitted to IEEE Electron Device Letters, IEEE, 2011                           **
+** Ports: Plus, Minus                                                              **
+*************************************************************************************
+** Improved LSI Model                                                              **
+*************************************************************************************
+
+** The diode model path must be included
+*.lib C:\Program Files (x86)\LTC\LTspiceIV\lib\cmp\standard.dio
+*.model D D
+
+
+*********************************************
+** Subcircuit and Parameters
+*********************************************
+.SUBCKT memristor Plus Minus PARAMS:

@@ -1,0 +1,22 @@
+
+//////////////////////////////////////////////////////////
+// Non-linear SPICE Model of the Memristor		 //
+// by Z. Biolek, D. Biolek, and V. Biolkova 	 	 //
+// Uses Joglekar, Biolek or Prodromakis window function  //
+// LSI Scheme						 //
+//////////////////////////////////////////////////////////
+// Ron, Roff: Resistance in ON/OFF States
+// Rinit: Resistance at T50
+// D: Width of the thin film
+// uv: Migration coefficient
+// p: Parameter of the Window function
+// for modeling nonlinear boundary conditions
+// x: W/D Ratio, W is the actual width
+// of the doped area (from 0 to D)
+//////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////
+// Subcircuit and Parameters
+/////////////////////////////////////////////
+
+subckt memristor (Plus Minus)

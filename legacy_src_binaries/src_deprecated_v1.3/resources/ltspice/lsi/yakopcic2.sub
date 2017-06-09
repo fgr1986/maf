@@ -1,0 +1,12 @@
+*********************************************
+**State equations modeling
+*********************************************
+EG dx 0 value={Ap*(exp(V(Plus, Minus)) - exp(Vp))* winYakopcicPositive(V(x), Xp, Xn)*stp(V(Plus, Minus)-Vp) -An*(exp(-V(Plus, Minus)) - exp(Vn))* winYakopcicNegative(V(X), Xp, Xn)*stp(-V(Plus, Minus)-Vn)}
+EX x 0 value={idt(V(dx), x_init)}
+GI Plus Minus value={a1*V(x)*sinh(b*(V(Plus, Minus)))*stp(V(Plus, Minus)) + a2*V(x)*sinh(b*(V(Plus, Minus)))*stp(-V(Plus, Minus))}
+
+.func winYakopcicPositive(x, Xp, Xn) = { exp(-{alphaP}*(x - Xp))* ((Xp-x)/(1-Xp) +1) *stp(x-Xp) + stp(Xp-x)}
+.func winYakopcicNegative(x, Xp, Xn) = {exp(alphaN*(x + Xn + 1))* (x/(1-Xn)) *stp(1-x-Xn) + stp(x-1+Xn) }
+
+.ENDS memristor
+

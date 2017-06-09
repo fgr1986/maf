@@ -1,0 +1,32 @@
+///////// Differential Equation Modeling /////////
+Gw (0 w) bsource i=i(E1)*uv*Ron/pow(D,2)*f(v(w),i(E1),p)
+Cw (w 0) capacitor c=1
+ic w=wInit
+Raux (w 0) resistor r=1T
+
+///////// Resistive Port of the Memristor /////////
+E1 (Plus x) bsource v=-i(E1)*v(w)*(Roff-Ron)
+Roff (x Minus) resistor r=Roff
+
+//step function
+real stepFunct(real a) {
+	return max(0,sgn(a));
+}
+
+//Joglekar Window function 
+//real f(real a) {
+//	return 1-pow((2*x-1),(2*p));
+//}
+
+// Biolek Window Function 
+real f(real x, real i, real p) {
+	return	min(max(1-pow(x-stepFunct(-i),(2*p)), 0), 1);
+}
+
+//Prodomakis Window
+//real f(real x, real i, real p) {
+//	return 1-pow(pow(x-0.5,2) +0.75,p);
+//}
+
+ends memristor
+

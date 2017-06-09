@@ -1,0 +1,25 @@
+*********************************************
+**STATE EQUATi_on MODELING
+*********************************************
+G1 Plus internal value={sgn(V(x))*(1/V(dw))**2*0.0617* (V(phiI)*exp(-V(B)*V(sr))-(V(phiI)+abs(V(x)))* exp(-V(B)*V(sr2)))}
+Esr sr 0 value={sqrt(V(phiI))}
+Esr2 sr2 0 value={sqrt(V(phiI)+abs(V(x)))}
+Rseries internal Minus Rs
+Eg x 0 value={V(Plus)-V(internal)}
+Elamda Lmda 0 value={Lm/V(w)}
+Ew2 w2 0 value={w1+V(w)- (0.9183/(2.85+4*V(Lmda)-2*abs(V(x))))}
+EDw dw 0 value={V(w2)-w1}
+EB B 0 value={10.246*V(dw)}
+ER R 0 value={(V(w2)/w1)*(V(w)-w1)/(V(w)-V(w2))}
+EphiI phiI 0 value={phio-abs(V(x))*((w1+V(w2))/(2*V(w)))- 1.15*V(Lmda)*V(w)*log(V(R))/V(dw)}
+C1 w 0 1e-9 IC={w_init}
+R w 0 1e14
+Ec c 0 value={abs(V(internal)-V(Minus))/215}
+Emon1 mon1 0 value={((V(w)-a_off)/w_c)-(V(c)/b)}
+Emon2 mon2 0 value={(a_on-V(w))/w_c-(V(c)/b)}
+Goff 0 w value={f_off*sinh(stp(V(x))*V(c)/i_off)* exp(-exp(V(mon1))-V(w)/w_c)*stp(I(G1)-i_off)}
+Gon w 0 value={f_on*sinh(stp(-V(x))*V(c)/i_on)* exp(-exp(V(mon2))-V(w)/w_c)*stp(i_on-I(G1))}
+
+*.func signm(v) = (sgn(v)+1)/2;
+.ENDS memristor
+

@@ -1,0 +1,29 @@
+*********************************************
+**STATE EQUATION MODELING
+*********************************************
+**State variable
+Gvon 0 w  value={stp(w_max-V(w))*stp(V(Plus, Minus))*gon(V(Plus, Minus), sf(V(w), sfo, sfm, p), p0, fon)}
+Gvoff 0 w  value={stp(V(w)-w_min)*stp(V(Minus, Plus))*goff(V(Plus, Minus), sf(V(w),  sfo, sfm, p), p0, foff)}
+**Integration
+Cw w 0 c
+.IC V(w) {w_init}
+Raux w 0 1T
+**Current
+G1 Plus Minus value={(V(w)**n)*a1*sinh(b1*V(Plus, Minus)) + a2*(exp(b2*V(Plus, Minus))-1)}
+*****************************
+** MIM Threshold Functions **
+*****************************
+**step function
+*.func stepFunct(a) = max(0,sgn(a));
+**shape function
+.func sf(w, sfo, sfm, p) = max(0, sfo + sfm*(1-(2*w-1**(2*p))));
+**stp Returns 1 if v is positive, 0 if negative.
+*.func stp(v) = (sgn(v)+1)/2;
+**dw/dt positive contribution
+.func gon(v1, v2, v3, fon) = f_on*(1-v1/(2*v3))*exp(v2*v3*(1-sqrt(1-v1/(2*v3))));
+**dw/dt negative contribution
+.func goff(v1, v2, v3, foff) = -f_off*(1+v1/(2*v3))*exp(v2*v3*(1-sqrt(1+v1/(2*v3))));
+**Prevent division by 0
+.func prevDivideBy0(a, b) = (a/ max(1e-5, b));
+.ENDS memristor
+**End of Netlist

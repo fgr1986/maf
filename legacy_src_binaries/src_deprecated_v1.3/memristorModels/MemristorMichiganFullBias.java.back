@@ -1,0 +1,242 @@
+package memristorModels;
+
+import simulationObjects.InputVoltage;
+import simulationObjects.Magnitude;
+import simulationObjects.MemristorParameter;
+import simulationObjects.Resources;
+import simulationObjects.SimulationResult;
+import simulationObjects.Timing;
+
+/**
+ * Memristor simulator. This program is included in the PFC 'DINÁMICA DE
+ * CIRCUITOS NO LINEALES CON MEMRISTORES,' Fernando García Redondo, ETSIT UPM
+ * student.
+ * 
+ * This class allows the simulation of a generic or HP memristor. You can
+ * simulate a memristor conected to a sinusoidal input or use the model with an
+ * iterative external simulator.
+ * 
+ * @author Fernando García Redondo, fernando.garca@gmail.com
+ * @author License: use, copy or modify, but contact the author
+ */
+public class MemristorMichiganFullBias extends MemristorModel {
+
+	private double alpha;
+	// private double F0;
+	private double fullBiasK;
+	private double Phi0_3_2; // Phi0 ^3/2
+	private double Phi0_1_2; // Phi0 ^1/2
+	private double ec_1_2; // em ^1/2
+	private MemristorParameter kappa; // rate dependence on applied voltage
+	private MemristorParameter R_init; // rate dependence on applied voltage
+	private MemristorParameter beta; // rate dependence on applied voltage
+	private MemristorParameter area; // device area
+	private MemristorParameter h; // Overall thickness of the dielectric
+	private MemristorParameter Phi0; // Electron barrier height
+	private MemristorParameter l_init;
+	private MemristorParameter Ua; // Activation potential
+	private MemristorParameter T; // Temperature in Kelvins
+
+	private Magnitude l; // Filament length
+	private Magnitude lDot;
+	private Magnitude b1;
+	private Magnitude c1;
+	private Magnitude h_l;
+	private double kT;
+	private double exp_UaeKT;
+	private int LINDEX = 4;
+	private int LDOTINDEX = 5;
+
+	/**
+	 * Default constructor
+	 */
+	public MemristorMichiganFullBias() {
+		super(4);
+		l = new Magnitude("l", true, saveMagnitudesInMemory, LINDEX, 1e9, "nm");
+		lDot = new Magnitude("lDot", true, saveMagnitudesInMemory, LDOTINDEX, 1e9, "nm");
+		b1 = new Magnitude("b1", true, saveMagnitudesInMemory, 6, 1, "");
+		c1 = new Magnitude("c1", true, saveMagnitudesInMemory, 7, 1, "");
+		h_l = new Magnitude("v", true, saveMagnitudesInMemory, 8, 1e9, "nm");
+		stateVariables.add(l);
+		stateVariables.add(lDot);
+		stateVariables.add(b1);
+		stateVariables.add(c1);
+		stateVariables.add(h_l);
+		System.out.println("Selecting the model of memristor: Michigan.");
+	}
+
+	@Override
+	public void setInstance() {
+		// init the memristor parameters
+		R_init = getSelectedParameter("R_init");
+		area = getSelectedParameter("area");
+		T = getSelectedParameter("T");
+		l_init = getSelectedParameter("l_init");
+		Phi0 = getSelectedParameter("Phi0");
+		kappa = getSelectedParameter("kappa");
+		beta = getSelectedParameter("beta");
+		Ua = getSelectedParameter("Ua");
+		h = getSelectedParameter("h");
+		alpha = 2 * Math.sqrt(2 * Resources.effMSi) / Resources.reducedPLANK;
+		// F0 = 2 * alpha * Math.sqrt(Resources.e * Math.pow(Phi0.getValue(),
+		// 3))
+		// / 3;
+		kT = Resources.k * T.getValue();
+		exp_UaeKT = Math.exp(-Ua.getValue() * Resources.e / kT);
+		fullBiasK = area.getValue() * 4 * Resources.e * Math.PI * Math.PI
+				* Resources.effMSi * kT / Math.pow(Resources.PLANK, 3);
+		Phi0_3_2 = Math.pow(Phi0.getValue(), 3 / 2);
+		Phi0_1_2 = Math.sqrt(Phi0.getValue());
+		ec_1_2 = Math.sqrt(Resources.e);
+		// init the memristor magnitudes and state variable
+		// state variables
+		l.setCurrentValue(l_init.getValue());
+		lDot.setCurrentValue(0);
+		b1.setCurrentValue(0);
+		c1.setCurrentValue(0);
+		// magnitudes
+		i.setCurrentValue(0);
+		v.setCurrentValue(0);
+		Rm.setCurrentValue(R_init.getValue());
+		this.updateBackValuesMagnitudes();
+	}
+
+	@Override
+	public SimulationResult resolveStep(Timing timing, InputVoltage inputVoltage) {
+		acceptIncrease = false;
+		needDecrease = false;
+		try {
+			// v.setCurrentValue(Math.signum(inputVoltage.getCurrentVoltage())
+			// * (Math.abs(inputVoltage.getCurrentVoltage()) - Math.abs(i
+			// .getBackValue() * InSeriesResistance.getValue())));
+			v.setCurrentValue(inputVoltage.getCurrentVoltage());
+			lDot.setCurrentValue(prev_underflow() * ion_flow());
+			integrateStateVariable(LINDEX, LDOTINDEX, timing.getTStep());
+			h_l.setCurrentValue(h.getValue() - l.getCurrentValue());
+			i.setCurrentValue(fullBias());
+			if (Math.abs(i.getCurrentValue()) > Resources.constMinI
+					&& Math.abs(v.getCurrentValue()) > Resources.constMinV) {
+				Rm.setCurrentValue(Math.abs(v.getCurrentValue()
+						/ i.getCurrentValue()));
+			} else {
+				Rm.setCurrentValue(Rm.getBackValue());
+			}
+			time.setCurrentValue(time.getBackValue() + timing.getTStep());
+
+			// check magnitudes
+			return checkMagnitudes(timing.getStepCounter());
+		} catch (Exception exc) {
+			return new SimulationResult(true, timing.getStepCounter(),
+					exc.getLocalizedMessage());
+		}
+	}
+
+	private double ion_flow() {
+		return beta.getValue()
+				* exp_UaeKT
+				* Math.sinh(v.getCurrentValue() * kappa.getValue()
+						/ T.getValue());
+	}
+
+	private double prev_underflow() {
+		// return heaviside(Math.signum(l.getBackValue() - 1e-12)
+		// + Math.signum(ion_flow()) + 1);
+
+		return Math
+				.max(0,
+						Math.min(
+								1,
+								(1 - Math.pow(
+										(l.getBackValue() / h.getValue() - heaviside(-ion_flow())),
+										20))));
+	}
+
+	private double fullBias() {
+		if (Math.abs(v.getCurrentValue()) <= Resources.constMinV) {
+			return 0;
+		}
+		c1.setCurrentValue(c1());
+		b1.setCurrentValue(b1());
+		double auxDen = c1() * Math.sin(Math.PI * c1() * kT);
+		if (auxDen == 0 || Double.isNaN(auxDen) || Double.isInfinite(auxDen)) {
+			needDecrease = true;
+			return 0;
+		}
+		// if(Math.abs(v.getCurrentValue())>Phi0.getValue()){
+		// System.out.println(Math.exp(Math.abs(c1() * Resources.e
+		// * v.getCurrentValue())));
+		// }
+		return Math.signum(v.getCurrentValue())
+				* fullBiasK
+				* Math.exp(-b1())
+				/ auxDen
+				* (1 - Math.exp(-Math.abs(c1() * Resources.e
+						* v.getCurrentValue())));
+	}
+
+	private double c1() {
+		// COMPLETE C1
+		if (Math.abs(v.getCurrentValue()) > Phi0.getValue()) {
+			return alpha * (h.getValue() - l.getCurrentValue()) * Phi0_1_2
+					/ (Math.abs(v.getCurrentValue()) * ec_1_2);
+		} else {
+			return alpha
+					* (h.getValue() - l.getCurrentValue())
+					* (Phi0_1_2 - Math.sqrt(Phi0.getValue()
+							- Math.abs(v.getCurrentValue())))
+					/ (Math.abs(v.getCurrentValue()) * ec_1_2);
+		}
+
+	}
+
+	private double b1() {
+		if (Math.abs(v.getCurrentValue()) < Resources.constMinV) {
+			return Double.POSITIVE_INFINITY;
+		}
+		if (Math.abs(v.getCurrentValue()) > Phi0.getValue()) {
+			return 2 * alpha * (h.getValue() - l.getCurrentValue()) * ec_1_2
+					/ (3 * Math.abs(v.getCurrentValue())) * (Phi0_3_2);
+		} else {
+			return 2
+					* alpha
+					* (h.getValue() - l.getCurrentValue())
+					* ec_1_2
+					/ (3 * Math.abs(v.getCurrentValue()))
+					* (Phi0_3_2 - Math.pow(
+							Phi0.getValue() - Math.abs(v.getCurrentValue()),
+							3 / 2));
+		}
+	}
+
+	/*
+	 * Auxiliar function
+	 * 
+	 * @returns the heaviside function of a variable
+	 */
+	public double heaviside(double number) {
+		if (number >= 0) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	@Override
+	public boolean acceptStep() {
+		boolean condWDot = Math.abs(lDot.getBackValue()) > this.derivedStateVariableAlmostZero
+				&& Math.abs(lDot.getCurrentValue()) > derivedStateVariableControlRatioDown
+						* Math.abs(lDot.getBackValue());
+
+		boolean totalCond = needDecrease || condWDot;
+		needDecrease = totalCond;
+		if (!needDecrease) {
+			acceptIncrease = (Math.abs(lDot.getCurrentValue()) > this.derivedStateVariableAlmostZero && Math
+					.abs(lDot.getCurrentValue()) < Math
+					.abs(lDot.getBackValue())
+					* derivedStateVariableControlRatioUp);
+		} else {
+			acceptIncrease = false;
+		}
+		return !needDecrease;
+	}
+}
