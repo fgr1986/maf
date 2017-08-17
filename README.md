@@ -17,7 +17,7 @@
 
 # Academic Papers
 ## Journal Papers
-* **[Building Memristor Applications: From Device Model to Circuit Design](dx.doi.org/10.1109/TNANO.2014.2345093).** Fernando García-Redondo, Marisa López-Vallejo, Pablo Ituero. IEEE Transactions on Nanotechnology. 2014. Accepted for publication. Impact Factor 2012: 1,80.
+* **[Building Memristor Applications: From Device Model to Circuit Design](http://dx.doi.org/10.1109/TNANO.2014.2345093).** Fernando García-Redondo, Marisa López-Vallejo, Pablo Ituero. IEEE Transactions on Nanotechnology. 2014. Accepted for publication. Impact Factor 2012: 1,80.
 * **[The tractability index of memristive circuits: branch-oriented and tree-based models](http://oa.upm.es/10286/1/tractmem1.pdf).** García Redondo, Fernando and Riaza, Ricardo. Mathematical Methods in the Applied Sciences. 201. Impact Factor 2012: 0.743
 
 ## Conference Papers
