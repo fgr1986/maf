@@ -294,7 +294,7 @@ public class DCSimulationUI extends StackPane {
             plotGnuPlot = true;
             Simulate();
         });
-        bCharacterizePlotJFreeChart = new Button("Characterize and plot\nusing embebed graphs");
+        bCharacterizePlotJFreeChart = new Button("Characterize and plot\nusing embedded graphs");
         bCharacterizePlotJFreeChart.setGraphic(dm.GetIcon("/es/upm/die/vlsi/memristor/resources/icons/run_plot_icon.png"));
         bCharacterizePlotJFreeChart.setOnAction((ActionEvent e) -> {
             plotAfterSimulate = true;
