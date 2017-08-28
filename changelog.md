@@ -1,19 +1,22 @@
-# Changelog of version v1.8.4c
-* Changelog from version v1.8.2-1.8.4b
-    * **aSiC model: aSiC device correctly fitted**
+# Changelog from version v1.8.5
+    * The Repository has been cleaned
+    * Will have Eclipse (prior JavaFX installation) import scripts/project files
 
 # Version 1.x.y
 
 
 * **TO DO IN NEXT VERSION** order by priority: v2.0
-    * **Different current contributions**
     * **Set instance going ON/OFF dependent on control variable?**
     * ENUM in voltage stages
     * Complex csv files import
-    * Poisson
+    * Poisson distributions
 
 
 ## Version 1.8.y
+
+    * Changelog from version v1.8.5
+        * The Repository has been cleaned
+        * Will have Eclipse (prior JavaFX installation) import scripts/project files
 
     * Changelog from version v1.8.2-1.8.4b
         * **aSiC model: aSiC device correctly fitted**

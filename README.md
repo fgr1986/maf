@@ -1,7 +1,7 @@
 # Memristor Application Framework
 
 # Version
-> v1.8.4c, 21/04/2017
+> v1.8.5, 01/09/2017
 
 # Author:
 * [Fernando García-Redondo](http://www.fernandeando.com/profile.html)
