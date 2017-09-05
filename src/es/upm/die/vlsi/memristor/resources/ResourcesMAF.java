@@ -10,9 +10,9 @@ public class ResourcesMAF {
     //app info
 
     public static final String APPTITLE = "Memristor Analysis Framework";
-    public static final String APPVERSION = "v1.8.4";
+    public static final String APPVERSION = "v1.8.6";
     public static final String WEB = "http://vlsi.die.upm.es/memristor";
-    public static final String REPO = "https://bitbucket.org/fgr1986/maf";
+    public static final String REPO = "https://github.com/fgr1986/maf";
 
     //
     public static final Font TITLEFONT = Font.font("Verdana", FontWeight.BOLD, 12);
@@ -95,8 +95,8 @@ public class ResourcesMAF {
     public static final String SIMULATIONSFOLDER = "simulations";
     public static final String EXTERNALGRAPHSFOLDER = "external_graphs";
     public static final String SIMULATIONGRAPHSFOLDER = "simulation_graphs";
-    public static final String FITTINGGRAPHSFOLDER = "fitting_graphs"; 
-    public static final String GNUPLOTSCRIPTSFOLDER = "gnuplot_scripts"; 
+    public static final String FITTINGGRAPHSFOLDER = "fitting_graphs";
+    public static final String GNUPLOTSCRIPTSFOLDER = "gnuplot_scripts";
     // Special characters
     public static final String OHM1 = "Ω";
     public static final String OHM2 = "(Ω)";

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project maf with libraries in sub-folder">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <!--define folder properties-->
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="${dir.buildfile}/../../.."/>
+    <property name="dir.jarfile" value="${dir.buildfile}"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/MAF_v1.8.6.jar">
+            <manifest>
+                <attribute name="Main-Class" value="es.upm.die.vlsi.memristor.main.MAF"/>
+                <attribute name="Class-Path" value=". MAF_v1.8.6_lib/org.eclipse.fx.ide.css.jfx8_3.0.0.201705220750.jar MAF_v1.8.6_lib/jfreechart-1.0.19.jar MAF_v1.8.6_lib/opencsv-4.0.jar MAF_v1.8.6_lib/jfreechart-1.0.19-experimental.jar MAF_v1.8.6_lib/jfreesvg-2.0.jar MAF_v1.8.6_lib/jfreechart-1.0.19-swt.jar MAF_v1.8.6_lib/jcommon-1.0.23.jar"/>
+            </manifest>
+            <fileset dir="${dir.workspace}/maf/bin"/>
+        </jar>
+        <delete dir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+        <mkdir dir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+        <copy file="/home/fgarcia/.p2/pool/plugins/org.eclipse.fx.ide.css.jfx8_3.0.0.201705220750.jar" todir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+        <copy file="${dir.workspace}/maf/lib/jfreechart/jfreechart-1.0.19.jar" todir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+        <copy file="${dir.workspace}/maf/lib/opencsv-4.0.jar" todir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+        <copy file="${dir.workspace}/maf/lib/jfreechart/jfreechart-1.0.19-experimental.jar" todir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+        <copy file="${dir.workspace}/maf/lib/jfreechart/jfreesvg-2.0.jar" todir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+        <copy file="${dir.workspace}/maf/lib/jfreechart/jfreechart-1.0.19-swt.jar" todir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+        <copy file="${dir.workspace}/maf/lib/jcommon-1.0.23.jar" todir="${dir.jarfile}/MAF_v1.8.6_lib"/>
+    </target>
+</project>

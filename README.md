@@ -1,7 +1,7 @@
 # Memristor Application Framework
 
 # Version
-> v1.8.5, 01/09/2017
+> v1.8.6, 05/09/2017
 
 # Author:
 * [Fernando García-Redondo](http://www.fernandeando.com/profile.html)
@@ -38,17 +38,50 @@
 * [Optional] Jfreechart libraries installed and configured
 * [Optional] Ant/Maven
 
-# How to build
-* **Option 1)** Import the ant build file.
-* **Option 2)** Netbeans/Eclipse IDE
-	* Create a new JavaFx Project.
-	* Add the sources/libraries.
-	* Configure the BUILDPATH and PATH: add the libraries to the PATH.
+## Requirements installation: Linux.
+* Download OpenJDK-8. In Ubuntu/Debian/Mint
+		sudo apt install openjdk-8-jdk openjdk-8-doc
+* Download open-javafx. In Ubuntu/Debian/Mint
+		sudo apt install openjfx
 
-# How to run
+## Requirements installation: Windows.
+* Download java 8 JDK (development) JRE (run) from Oracle web site
+* Download javafx from Oracle web site
+
+# How to build
+* **Option 1)** Import the project in Eclipse. This will use:
+	* *.project* file
+	* *.classpath, build.xml and build.fxbuild* files
+* **Option 2)** Configure and import the ant build file *build.xml*
+* **Option 3)** Netbeans/Eclipse IDE
+	* Create a new JavaFx Project
+	* Add the sources *src*
+	* Configure the **BUILDPATH** and **PATH**: add the libraries in the *lib* folder to the PATH
+
+# Project Structure
+
+	```
+	maf.........................[root]
+	    * src...................[sources ]
+	    * lib...................[JAR libraries]
+	    * dist..................[executable jars]
+	    * measures..............[examples of measures]
+	    * conf_files............[examples of configuration profiles for models]
+	    * icons.................[icons]
+	    * legacy_src_binaries...[deprecated MAF sources and binaries]
+	    * .project..............[eclipse project file]
+	    * .classpath
+	    * build.xml
+	    * build.fxbuild
+	    * changelog
+	    * LICENSE
+	    * README
+	```
+
+# How to run (substitute 'X' with the required version)
 
 		java -jar MAF_X.jar
 
-## Increase RAM ussage (improves performance), where  -Xms specifies the minimum heapsize and -Xmx specifies the maximum size.
+## Increase RAM usage (improves performance), where  -Xms specifies the minimum heapsize and -Xmx specifies the maximum size.
 
-		java -jar -Xmx2048m -Xms1024m MAF.jar
+		java -jar -Xmx2048m -Xms1024m MAF_X.jar
