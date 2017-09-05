@@ -40,9 +40,13 @@
 
 ## Requirements installation: Linux.
 * Download OpenJDK-8. In Ubuntu/Debian/Mint
-		sudo apt install openjdk-8-jdk openjdk-8-doc
+```
+	sudo apt install openjdk-8-jdk openjdk-8-doc
+```
 * Download open-javafx. In Ubuntu/Debian/Mint
-		sudo apt install openjfx
+```
+sudo apt install openjfx
+```
 
 ## Requirements installation: Windows.
 * Download java 8 JDK (development) JRE (run) from Oracle web site
@@ -60,28 +64,30 @@
 
 # Project Structure
 
-	```
-	maf.........................[root]
-	    * src...................[sources ]
-	    * lib...................[JAR libraries]
-	    * dist..................[executable jars]
-	    * measures..............[examples of measures]
-	    * conf_files............[examples of configuration profiles for models]
-	    * icons.................[icons]
-	    * legacy_src_binaries...[deprecated MAF sources and binaries]
-	    * .project..............[eclipse project file]
-	    * .classpath
-	    * build.xml
-	    * build.fxbuild
-	    * changelog
-	    * LICENSE
-	    * README
-	```
+```
+maf.........................[root]
+    * src...................[sources ]
+    * lib...................[JAR libraries]
+    * dist..................[executable jars]
+    * measures..............[examples of measures]
+    * conf_files............[examples of configuration profiles for models]
+    * icons.................[icons]
+    * legacy_src_binaries...[deprecated MAF sources and binaries]
+    * .project..............[eclipse project file]
+    * .classpath
+    * build.xml
+    * build.fxbuild
+    * changelog
+    * LICENSE
+    * README
+```
 
-# How to run (substitute 'X' with the required version)
+# How to run
+substitute 'X' with the required version
 
 		java -jar MAF_X.jar
 
-## Increase RAM usage (improves performance), where  -Xms specifies the minimum heapsize and -Xmx specifies the maximum size.
+## Increase RAM usage (improves performance)
+-Xms specifies the minimum heapsize and -Xmx specifies the maximum size.
 
 		java -jar -Xmx2048m -Xms1024m MAF_X.jar
